@@ -281,36 +281,10 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.menu_tabs_group, ITEM_ID_HISTORY, ORDER, R.string.action_history)
                 .setIcon(R.drawable.ic_history);
 
-        /* * REMOVED KIOSKS (Gaming, Trending, Live etc.)
-         *
-        final int currentServiceId = ServiceHelper.getSelectedServiceId(this);
-        final StreamingService service = NewPipe.getService(currentServiceId);
-
-        int kioskMenuItemId = 0;
-
-        for (final String ks : service.getKioskList().getAvailableKiosks()) {
-            drawerLayoutBinding.navigation.getMenu()
-                    .add(R.id.menu_kiosks_group, kioskMenuItemId, 0, KioskTranslator
-                            .getTranslatedKioskName(ks, this))
-                    .setIcon(KioskTranslator.getKioskIcon(ks));
-            kioskMenuItemId++;
-        }
-        */
-
         //Settings only (Donation and About REMOVED)
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_options_about_group, ITEM_ID_SETTINGS, ORDER, R.string.settings)
                 .setIcon(R.drawable.ic_settings);
-        
-        /* REMOVED DONATION AND ABOUT
-        drawerLayoutBinding.navigation.getMenu()
-                .add(R.id.menu_options_about_group, ITEM_ID_DONATION, ORDER,
-                        R.string.donation_title)
-                .setIcon(R.drawable.volunteer_activism_ic);
-        drawerLayoutBinding.navigation.getMenu()
-                .add(R.id.menu_options_about_group, ITEM_ID_ABOUT, ORDER, R.string.tab_about)
-                .setIcon(R.drawable.ic_info_outline);
-        */
     }
 
     private boolean drawerItemSelected(final MenuItem item) {
@@ -397,7 +371,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupDrawerHeader() {
-        drawerHeaderBinding.drawerHeaderActionButton.setOnClickListener(view -> toggleServices());
+        // HIDE THE DRAWER HEADER ACTION BUTTON (ARROW)
+        drawerHeaderBinding.drawerHeaderActionButton.setVisibility(View.GONE);
 
         // If the current app name is bigger than the default "NewPipe" (7 chars),
         // let the text view grow a little more as well.
@@ -530,8 +505,13 @@ public class MainActivity extends AppCompatActivity {
 
             drawerHeaderBinding.drawerHeaderServiceView.post(() -> drawerHeaderBinding
                     .drawerHeaderServiceView.setSelected(true));
+            
+            // REMOVED ContentDescription setting for the hidden button
+            /*
             drawerHeaderBinding.drawerHeaderActionButton.setContentDescription(
                     getString(R.string.drawer_header_description) + selectedServiceName);
+            */
+            
         } catch (final Exception e) {
             ErrorUtil.showUiErrorSnackbar(this, "Setting up service toggle", e);
         }
