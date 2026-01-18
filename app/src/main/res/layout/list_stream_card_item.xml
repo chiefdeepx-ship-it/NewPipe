@@ -31,7 +31,8 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textStyle="bold"
         android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/itemVideoTitleView"
+        app:layout_constraintTop_toTopOf="@+id/itemVideoTitleView"
+        app:layout_constraintBottom_toBottomOf="@+id/itemVideoTitleView"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="10:24" />
 
@@ -42,10 +43,11 @@
         android:layout_marginEnd="4dp"
         android:ellipsize="end"
         android:maxLines="3"
-        android:text="Video Title Example"
+        android:text="Video Title Example Here"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
+        android:lineSpacingExtra="4dp"
         app:layout_constraintEnd_toStartOf="@+id/itemDurationView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -56,7 +58,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:lines="1"
         android:includeFontPadding="false"
@@ -65,36 +66,43 @@
         android:textColor="?android:attr/textColorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemVideoTitleView"
-        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/itemAdditionalDetails"
         tools:text="UP Tak" />
 
     <org.schabi.newpipe.views.NewPipeTextView
         android:id="@+id/itemAdditionalDetails"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:ellipsize="end"
         android:lines="1"
         android:includeFontPadding="false"
         android:textAppearance="?android:textAppearanceSmall"
         android:textSize="14sp"
         android:textColor="?android:attr/textColorSecondary"
-        app:layout_constraintBottom_toBottomOf="@id/itemUploaderView"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@id/itemUploaderView"
         app:layout_constraintStart_toEndOf="@id/itemUploaderView"
-        app:layout_constraintTop_toTopOf="@id/itemUploaderView"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:text="• 8 months ago" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="?android:attr/listDivider"
+        android:alpha="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemUploaderView"
+        app:layout_constraintVertical_bias="1.0" />
 
     <org.schabi.newpipe.views.AnimatedProgressBar
         android:id="@+id/itemProgressView"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="8dp"
         android:progressDrawable="?progress_horizontal_drawable"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemUploaderView" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
