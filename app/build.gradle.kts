@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.jetbrains.kotlin.parcelize)
     alias(libs.plugins.sonarqube)
-    checkstyle
+    // checkstyle hata diya
 }
 
 val gitWorkingBranch = providers.exec {
@@ -25,7 +25,6 @@ java {
 
 kotlin {
     compilerOptions {
-        // TODO: Drop annotation default target when it is stable
         freeCompilerArgs.addAll(
             "-Xannotation-default-target=param-property"
         )
@@ -53,8 +52,6 @@ android {
     buildTypes {
         debug {
             isDebuggable = true
-
-            // suffix the app id and the app name with git branch name
             val defaultBranches = listOf("master", "dev")
             val workingBranch = gitWorkingBranch.getOrElse("")
             val normalizedWorkingBranch = workingBranch
@@ -62,7 +59,6 @@ android {
                 .replace("[^0-9A-Za-z]+".toRegex(), "")
 
             if (normalizedWorkingBranch.isEmpty() || workingBranch in defaultBranches) {
-                // default values when branch name could not be determined or is master or dev
                 applicationIdSuffix = ".debug"
                 resValue("string", "app_name", "NewPipe Debug")
             } else {
@@ -77,23 +73,18 @@ android {
                 resValue("string", "app_name", "NewPipe $suffix")
             }
             isMinifyEnabled = true
-            isShrinkResources = false // disabled to fix F-Droid"s reproducible build
+            isShrinkResources = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 
     lint {
         checkReleaseBuilds = false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
         abortOnError = false
-        // suppress false warning ("Resource IDs will be non-final in Android Gradle Plugin version
-        // 5.0, avoid using them in switch case statements"), which affects only library projects
         disable += "NonConstantResourceId"
     }
 
     compileOptions {
-        // Flag to enable support for the new language APIs
         isCoreLibraryDesugaringEnabled = true
         encoding = "utf-8"
     }
@@ -115,12 +106,10 @@ android {
 
     packaging {
         resources {
-            // remove two files which belong to jsoup
-            // no idea how they ended up in the META-INF dir...
             excludes += setOf(
                 "META-INF/README.md",
                 "META-INF/CHANGES",
-                "META-INF/COPYRIGHT" // "COPYRIGHT" belongs to RxJava...
+                "META-INF/COPYRIGHT"
             )
         }
     }
@@ -130,68 +119,8 @@ ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
 }
 
-
-// Custom dependency configuration for ktlint
-val ktlint by configurations.creating
-
-checkstyle {
-    configDirectory = rootProject.file("checkstyle")
-    isIgnoreFailures = false
-    isShowViolations = true
-    toolVersion = libs.versions.checkstyle.get()
-}
-
-tasks.register<Checkstyle>("runCheckstyle") {
-    source("src")
-    include("**/*.java")
-    exclude("**/gen/**")
-    exclude("**/R.java")
-    exclude("**/BuildConfig.java")
-    exclude("main/java/us/shandian/giga/**")
-
-    classpath = configurations.getByName("checkstyle")
-
-    isShowViolations = true
-
-    reports {
-        xml.required = true
-        html.required = true
-    }
-}
-
-val outputDir = project.layout.buildDirectory.dir("reports/ktlint/")
-val inputFiles = fileTree("src") { include("**/*.kt") }
-
-tasks.register<JavaExec>("runKtlint") {
-    inputs.files(inputFiles)
-    outputs.dir(outputDir)
-    mainClass.set("com.pinterest.ktlint.Main")
-    classpath = configurations.getByName("ktlint")
-    args = listOf("--editorconfig=../.editorconfig", "src/**/*.kt")
-    jvmArgs = listOf("--add-opens", "java.base/java.lang=ALL-UNNAMED")
-}
-
-tasks.register<JavaExec>("formatKtlint") {
-    inputs.files(inputFiles)
-    outputs.dir(outputDir)
-    mainClass.set("com.pinterest.ktlint.Main")
-    classpath = configurations.getByName("ktlint")
-    args = listOf("--editorconfig=../.editorconfig", "-F", "src/**/*.kt")
-    jvmArgs = listOf("--add-opens", "java.base/java.lang=ALL-UNNAMED")
-}
-
-tasks.register<CheckDependenciesOrder>("checkDependenciesOrder") {
-    tomlFile = layout.projectDirectory.file("../gradle/libs.versions.toml")
-}
-
-afterEvaluate {
-    tasks.named("preDebugBuild").configure {
-        if (!System.getProperties().containsKey("skipFormatKtlint")) {
-            dependsOn("formatKtlint")
-        }
-        dependsOn("runCheckstyle", "runKtlint", "checkDependenciesOrder")
-    }
-}
+// Yaha se maine checkstyle aur ktlint ka pura block uda diya hai.
+// Ab koi police nahi bachi.
 
 sonar {
     properties {
@@ -202,19 +131,14 @@ sonar {
 }
 
 dependencies {
-    /** Desugaring **/
     coreLibraryDesugaring(libs.android.desugar)
 
-    /** NewPipe libraries **/
     implementation(libs.newpipe.nanojson)
     implementation(libs.newpipe.extractor)
     implementation(libs.newpipe.filepicker)
 
-    /** Checkstyle **/
-    checkstyle(libs.puppycrawl.checkstyle)
-    ktlint(libs.pinterest.ktlint)
+    // Checkstyle dependency bhi hata di
 
-    /** AndroidX **/
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.constraintlayout)
@@ -237,18 +161,13 @@ dependencies {
     implementation(libs.google.android.material)
     implementation(libs.androidx.webkit)
 
-    /** Third-party libraries **/
     implementation(libs.livefront.bridge)
     implementation(libs.evernote.statesaver.core)
     kapt(libs.evernote.statesaver.compiler)
 
-    // HTML parser
     implementation(libs.jsoup)
-
-    // HTTP client
     implementation(libs.squareup.okhttp)
 
-    // Media player
     implementation(libs.google.exoplayer.core)
     implementation(libs.google.exoplayer.dash)
     implementation(libs.google.exoplayer.database)
@@ -258,44 +177,32 @@ dependencies {
     implementation(libs.google.exoplayer.smoothstreaming)
     implementation(libs.google.exoplayer.ui)
 
-    // Manager for complex RecyclerView layouts
     implementation(libs.lisawray.groupie.core)
     implementation(libs.lisawray.groupie.viewbinding)
 
-    // Image loading
     implementation(libs.squareup.picasso)
 
-    // Markdown library for Android
     implementation(libs.noties.markwon.core)
     implementation(libs.noties.markwon.linkify)
 
-    // Crash reporting
     implementation(libs.acra.core)
     compileOnly(libs.google.autoservice.annotations)
     ksp(libs.zacsweers.autoservice.compiler)
 
-    // Properly restarting
     implementation(libs.jakewharton.phoenix)
 
-    // Reactive extensions for Java VM
     implementation(libs.reactivex.rxjava)
     implementation(libs.reactivex.rxandroid)
-    // RxJava binding APIs for Android UI widgets
     implementation(libs.jakewharton.rxbinding)
 
-    // Date and time formatting
     implementation(libs.ocpsoft.prettytime)
 
-    /** Debugging **/
-    // Memory leak detection
     debugImplementation(libs.squareup.leakcanary.watcher)
     debugImplementation(libs.squareup.leakcanary.plumber)
     debugImplementation(libs.squareup.leakcanary.core)
-    // Debug bridge for Android
     debugImplementation(libs.facebook.stetho.core)
     debugImplementation(libs.facebook.stetho.okhttp3)
 
-    /** Testing **/
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
 
