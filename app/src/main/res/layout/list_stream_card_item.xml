@@ -13,34 +13,43 @@
     android:clickable="true"
     android:focusable="true">
 
-    <org.schabi.newpipe.views.NewPipeTextView
-        android:id="@+id/itemVideoTitleView"
+    <ImageView
+        android:id="@+id/itemThumbnailView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:ellipsize="end"
-        android:maxLines="3"
-        android:text="Video Title Example Here"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="?android:attr/textColorPrimary"
-        app:layout_constraintEnd_toStartOf="@+id/itemDurationView"
+        android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Caste Census: Bihar ke jatigat Janganana me kya hua?" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <org.schabi.newpipe.views.NewPipeTextView
         android:id="@+id/itemDurationView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="4dp"
+        android:paddingStart="8dp"
         android:textAllCaps="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="?android:attr/textColorPrimary"
         android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@id/itemVideoTitleView"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/itemVideoTitleView"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="10:24" />
+
+    <org.schabi.newpipe.views.NewPipeTextView
+        android:id="@+id/itemVideoTitleView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:text="Video Title Example"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/itemDurationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Caste Census: Bihar ke jatigat Janganana me kya hua?" />
 
     <org.schabi.newpipe.views.NewPipeTextView
         android:id="@+id/itemUploaderView"
@@ -52,8 +61,8 @@
         android:lines="1"
         android:includeFontPadding="false"
         android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="?android:attr/textColorSecondary"
         android:textSize="14sp"
+        android:textColor="?android:attr/textColorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemVideoTitleView"
         app:layout_constraintWidth_default="wrap"
@@ -68,12 +77,24 @@
         android:lines="1"
         android:includeFontPadding="false"
         android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="?android:attr/textColorSecondary"
         android:textSize="14sp"
+        android:textColor="?android:attr/textColorSecondary"
         app:layout_constraintBottom_toBottomOf="@id/itemUploaderView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/itemUploaderView"
         app:layout_constraintTop_toTopOf="@id/itemUploaderView"
         tools:text="• 8 months ago" />
+
+    <org.schabi.newpipe.views.AnimatedProgressBar
+        android:id="@+id/itemProgressView"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="8dp"
+        android:progressDrawable="?progress_horizontal_drawable"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemUploaderView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
