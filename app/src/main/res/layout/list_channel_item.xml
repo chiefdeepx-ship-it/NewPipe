@@ -26,7 +26,7 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:src="@drawable/placeholder_person"
-        android:tint="?android:attr/textColorSecondary"
+        android:tint="?android:attr/textColorPrimary"
         app:shapeAppearance="@style/CircularImageView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,9 +53,8 @@
     <TextView
         android:id="@+id/itemChannelDescriptionView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:visibility="gone"
-        tools:text="Description text that will be hidden"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
