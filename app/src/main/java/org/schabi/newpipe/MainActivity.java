@@ -281,7 +281,8 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.menu_tabs_group, ITEM_ID_HISTORY, ORDER, R.string.action_history)
                 .setIcon(R.drawable.ic_history);
 
-        //Kiosks
+        /* * REMOVED KIOSKS (Gaming, Trending, Live etc.)
+         *
         final int currentServiceId = ServiceHelper.getSelectedServiceId(this);
         final StreamingService service = NewPipe.getService(currentServiceId);
 
@@ -294,11 +295,14 @@ public class MainActivity extends AppCompatActivity {
                     .setIcon(KioskTranslator.getKioskIcon(ks));
             kioskMenuItemId++;
         }
+        */
 
-        //Settings and About
+        //Settings only (Donation and About REMOVED)
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_options_about_group, ITEM_ID_SETTINGS, ORDER, R.string.settings)
                 .setIcon(R.drawable.ic_settings);
+        
+        /* REMOVED DONATION AND ABOUT
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_options_about_group, ITEM_ID_DONATION, ORDER,
                         R.string.donation_title)
@@ -306,6 +310,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_options_about_group, ITEM_ID_ABOUT, ORDER, R.string.tab_about)
                 .setIcon(R.drawable.ic_info_outline);
+        */
     }
 
     private boolean drawerItemSelected(final MenuItem item) {
@@ -672,25 +677,25 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Implement the following diagram behavior for the up button:
      * <pre>
-     *              +---------------+
-     *              |  Main Screen  +----+
-     *              +-------+-------+    |
-     *                      |            |
-     *                      ▲ Up         | Search Button
-     *                      |            |
-     *                 +----+-----+      |
-     *    +------------+  Search  |◄-----+
-     *    |            +----+-----+
-     *    |   Open          |
-     *    |  something      ▲ Up
-     *    |                 |
-     *    |    +------------+-------------+
-     *    |    |                          |
-     *    |    |  Video    <->  Channel   |
-     *    +---►|  Channel  <->  Playlist  |
-     *         |  Video    <->  ....      |
-     *         |                          |
-     *         +--------------------------+
+     * +---------------+
+     * |  Main Screen  +----+
+     * +-------+-------+    |
+     * |            |
+     * ▲ Up         | Search Button
+     * |            |
+     * +----+-----+      |
+     * +------------+  Search  |◄-----+
+     * |            +----+-----+
+     * |   Open          |
+     * |  something      ▲ Up
+     * |                 |
+     * |    +------------+-------------+
+     * |    |                          |
+     * |    |  Video    <->  Channel   |
+     * +---►|  Channel  <->  Playlist  |
+     * |  Video    <->  ....      |
+     * |                          |
+     * +--------------------------+
      * </pre>
      */
     private void onHomeButtonPressed() {
